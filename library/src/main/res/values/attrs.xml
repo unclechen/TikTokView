@@ -2,7 +2,10 @@
 <resources>
 
     <declare-styleable name="TikTokView">
-        <attr name="text_color" format="color"></attr>
+        <attr name="text_color" format="color"/>
+        <attr name="tik_tok_color" format="color"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="background_color" format="color"/>
     </declare-styleable>
 
 </resources>

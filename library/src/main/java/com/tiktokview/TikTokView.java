@@ -1,7 +1,5 @@
 package com.tiktokview;
 
-import com.tiktokview.utils.PxUtils;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.tiktokview.utils.PxUtils;
 
 /**
  * TikTokView is a time TextView.
@@ -22,7 +22,7 @@ public class TikTokView extends View {
     private Rect mBounds;
     private String mTextFormat = "%d";
     private TikTokMode mTikTokMode = TikTokMode.DECREMENT;
-    private String mBackgroundColor;
+    private int mBackgroundColor;
     private float mPadding;
     private float mTextSize;
     private int mTextColor;
@@ -42,10 +42,17 @@ public class TikTokView extends View {
 
     public TikTokView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+        initAttrs(context, attrs);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TikTokView);
         mTextColor = typedArray.getColor(R.styleable.TikTokView_text_color, Color.BLACK);
+        mBackgroundColor = typedArray.getColor(R.styleable.TikTokView_background_color, Color.TRANSPARENT);
+        mTikTokTintColor = typedArray.getColor(R.styleable.TikTokView_tik_tok_color, Color.BLACK);
+        mTextSize = typedArray.getLayoutDimension(R.styleable.TikTokView_text_size, PxUtils.sp2px(mContext, 30));
         typedArray.recycle();
-        init(context);
     }
 
     private void init(Context context) {
@@ -54,11 +61,11 @@ public class TikTokView extends View {
         mBounds = new Rect();
     }
 
-    public String getBackgroundColor() {
+    public int getBackgroundColor() {
         return mBackgroundColor;
     }
 
-    public void setBackgroundColor(String backgroundColor) {
+    public void setBackgroundColor(int backgroundColor) {
         mBackgroundColor = backgroundColor;
         invalidate();
     }
@@ -151,15 +158,14 @@ public class TikTokView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(mBackgroundColor);
         canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(PxUtils.sp2px(mContext, 22));
+        mPaint.setColor(mTextColor);
+        mPaint.setTextSize(mTextSize);
         mPaint.getTextBounds(mTextFormat, 0, mTextFormat.length(), mBounds);
         float textWidth = mBounds.width();
         float textHeight = mBounds.height();
-        canvas.drawText(mTextFormat, getWidth() / 2 - textWidth / 2,
-                getHeight() / 2 + textHeight / 2, mPaint);
+        canvas.drawText(mTextFormat, getWidth() / 2 - textWidth / 2, getHeight() / 2 + textHeight / 2, mPaint);
     }
 
 }
