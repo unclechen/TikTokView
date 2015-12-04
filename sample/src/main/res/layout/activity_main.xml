@@ -13,9 +13,9 @@
     <com.tiktokview.TikTokView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        TikTokView:text_color="@android:color/black"
-        TikTokView:background_color="@android:color/white"
-        TikTokView:tik_tok_color="@android:color/black"
+        android:padding="12dp"
+        TikTokView:text_color="@color/colorText"
+        TikTokView:background_color="@color/colorBackground"
         TikTokView:text_size="30sp"
         android:layout_centerInParent="true"/>
 
