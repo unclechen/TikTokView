@@ -48,9 +48,11 @@ public class TikTokView extends View {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TikTokView);
-        mTextColor = typedArray.getColor(R.styleable.TikTokView_text_color, Color.BLACK);
-        mBackgroundColor = typedArray.getColor(R.styleable.TikTokView_background_color, Color.TRANSPARENT);
-        mTextSize = (int) typedArray.getDimension(R.styleable.TikTokView_text_size, PxUtils.sp2px(mContext, 14));
+        mTextColor = typedArray.getColor(R.styleable.TikTokView_textColor, Color.BLACK);
+        mBackgroundColor = typedArray.getColor(R.styleable.TikTokView_backgroundColor, Color.TRANSPARENT);
+        mTextSize = (int) typedArray.getDimension(R.styleable.TikTokView_textSize, PxUtils.sp2px(mContext, 14));
+        mStartTime = (long) typedArray.getInteger(R.styleable.TikTokView_startTime, 15);
+        mEndTime = (long) typedArray.getInteger(R.styleable.TikTokView_endTime, 0);
         typedArray.recycle();
     }
 

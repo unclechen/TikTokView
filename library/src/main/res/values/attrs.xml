@@ -2,9 +2,11 @@
 <resources>
 
     <declare-styleable name="TikTokView">
-        <attr name="text_color" format="color"/>
-        <attr name="text_size" format="dimension"/>
-        <attr name="background_color" format="color"/>
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="startTime" format="integer"/>
+        <attr name="endTime" format="integer"/>
     </declare-styleable>
 
 </resources>

@@ -19,9 +19,11 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="9dp"
-        TikTokView:background_color="@color/colorBackground"
-        TikTokView:text_color="@color/colorText"
-        TikTokView:text_size="32sp" />
+        TikTokView:backgroundColor="@color/colorBackground"
+        TikTokView:endTime="0"
+        TikTokView:startTime="15"
+        TikTokView:textColor="@color/colorText"
+        TikTokView:textSize="32sp" />
 
 
 </RelativeLayout>
