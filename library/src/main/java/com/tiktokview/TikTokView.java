@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -51,7 +50,7 @@ public class TikTokView extends View {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TikTokView);
         mTextColor = typedArray.getColor(R.styleable.TikTokView_text_color, Color.BLACK);
         mBackgroundColor = typedArray.getColor(R.styleable.TikTokView_background_color, Color.TRANSPARENT);
-        mTextSize = typedArray.getLayoutDimension(R.styleable.TikTokView_text_size, PxUtils.sp2px(mContext, 30));
+        mTextSize = (int) typedArray.getDimension(R.styleable.TikTokView_text_size, PxUtils.sp2px(mContext, 14));
         typedArray.recycle();
     }
 
@@ -156,79 +155,82 @@ public class TikTokView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d("TikTokView", "onDraw");
         super.onDraw(canvas);
-        // draw background
+        // Draw the background.
         mPaint.setColor(mBackgroundColor);
         canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
-        // draw text
+        // Draw the numbers.
         mPaint.setColor(mTextColor);
         mPaint.setTextSize(mTextSize);
-        String text;
-        if (TikTokMode.DECREMENT == mTikTokMode) {
-            text = mEndTime + "";
-        } else {
-            text = mStartTime + "";
-        }
-        mPaint.getTextBounds(text, 0, text.length(), mBounds);
-        float textWidth = mBounds.width();
-        float textHeight = mBounds.height();
-        canvas.drawText(text, getWidth() / 2 - textWidth / 2, getHeight() / 2 + textHeight / 2, mPaint);
+        String text = getDesiredText();
+        // Make the text align center.
+        Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        int baseline = (getHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+        canvas.drawText(text, getWidth() / 2, baseline, mPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = getMeasuredWidth(); // MeasureSpec.getSize(measureSpec);
-        int height = getMeasuredHeight();
-        Log.d("TikTok", "onMeasure width = " + width);
-        Log.d("TikTok", "onMeasure height = " + height);
-        int widthWithoutPadding = width - getPaddingLeft() - getPaddingRight();
-        int heightWithoutPadding = height - getPaddingTop() - getPaddingBottom();
-        Log.d("TT", "padding left = " + getPaddingLeft());
-        Log.d("TikTok", "getDesiredWidth = " + getDesiredWidth());
-        Log.d("TikTok", "getDesiredHeight = " + getDesiredHeight());
-        int specMode = MeasureSpec.getMode(widthMeasureSpec);
+        setMeasuredDimension(getWidthMeasurement(widthMeasureSpec), getHeightMeasurement(heightMeasureSpec));
+    }
+
+    private int getWidthMeasurement(int measureSpec) {
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        int specSizeWithoutPadding = specSize - getPaddingLeft() - getPaddingRight();
         switch (specMode) {
             case MeasureSpec.UNSPECIFIED:
-                width = (int) getDesiredWidth();
-                height = (int) getDesiredHeight();
+                specSizeWithoutPadding = (int) getDesiredWidth();
                 break;
             case MeasureSpec.AT_MOST:
-                width = Math.min((int) getDesiredWidth(), width);
-                height = Math.min((int) getDesiredHeight(), height);
+                specSizeWithoutPadding = Math.min((int) getDesiredWidth(), specSizeWithoutPadding);
+                break;
+            case MeasureSpec.EXACTLY:
+                break;
+        }
+        return specSizeWithoutPadding + getPaddingLeft() + getPaddingRight();
+    }
+
+    private int getHeightMeasurement(int measureSpec) {
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        int specSizeWithoutPadding = specSize - getPaddingTop() - getPaddingBottom();
+        switch (specMode) {
+            case MeasureSpec.UNSPECIFIED:
+                specSizeWithoutPadding = (int) getDesiredHeight();
+                break;
+            case MeasureSpec.AT_MOST:
+                specSizeWithoutPadding = Math.min((int) getDesiredHeight(), specSizeWithoutPadding);
                 break;
             case MeasureSpec.EXACTLY:
                 break;
         }
 
-        setMeasuredDimension(width, height);
+        return specSizeWithoutPadding + getPaddingTop() + getPaddingBottom();
     }
 
     private float getDesiredWidth() {
-        String text;
-        if (TikTokMode.DECREMENT == mTikTokMode) {
-            text = mEndTime + "";
-        } else {
-            text = mStartTime + "";
-        }
+        mPaint.setTextSize(mTextSize);
+        String text = getDesiredText();
         mPaint.getTextBounds(text, 0, text.length(), mBounds);
-        float textWidth = mBounds.width();
-        float textHeight = mBounds.height();
-        return textWidth;
+        return mBounds.width();
     }
 
     private float getDesiredHeight() {
-        String text;
-        if (TikTokMode.DECREMENT == mTikTokMode) {
-            text = mEndTime + "";
-        } else {
-            text = mStartTime + "";
-        }
+        mPaint.setTextSize(mTextSize);
+        String text = getDesiredText();
         mPaint.getTextBounds(text, 0, text.length(), mBounds);
-        float textWidth = mBounds.width();
-        float textHeight = mBounds.height();
-        return textHeight;
+        return mBounds.height();
+    }
+
+    private String getDesiredText() {
+        if (TikTokMode.DECREMENT == mTikTokMode) {
+            return mEndTime + "";
+        } else {
+            return mStartTime + "";
+        }
     }
 
 }

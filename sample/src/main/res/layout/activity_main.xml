@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:TikTokView="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:TikTokView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,12 +11,17 @@
     tools:context="com.nought.tiktok.MainActivity">
 
     <com.tiktokview.TikTokView
+        android:id="@+id/tik_tok_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        TikTokView:text_color="@color/colorText"
+        android:layout_centerInParent="true"
+        android:paddingBottom="9dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="9dp"
         TikTokView:background_color="@color/colorBackground"
-        TikTokView:text_size="30sp"
-        android:layout_centerInParent="true"/>
+        TikTokView:text_color="@color/colorText"
+        TikTokView:text_size="32sp" />
+
 
 </RelativeLayout>
